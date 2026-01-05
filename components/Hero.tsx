@@ -17,7 +17,7 @@ const Hero: React.FC = () => {
   const handleDownloadResume = () => {
     // Creating a temporary link element to trigger the download from the specific local path
     const link = document.createElement('a');
-    link.href = "components/Resume.pdf"; // Path to the resume file
+    link.href = "./Resume.pdf"; // Path to the resume file
     link.download = 'TharaneeshJ Resume.pdf';
     document.body.appendChild(link);
     link.click();
