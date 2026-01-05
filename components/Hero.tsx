@@ -14,11 +14,11 @@ const Hero: React.FC = () => {
     }
   };
 
+  const MyComponent = () => {
   const handleDownloadResume = () => {
-    // Creating a temporary link element to trigger the download from the specific local path
     const link = document.createElement('a');
-    link.href = './src/resume.jpg'; // Path to the resume file
-    link.download = 'TharaneeshJ Resume.pdf';
+    link.href = '/Resume.pdf';
+    link.download = 'TharaneeshJ_Resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -111,6 +111,7 @@ const Hero: React.FC = () => {
       </div>
     </section>
   );
+};
 };
 
 export default Hero;
