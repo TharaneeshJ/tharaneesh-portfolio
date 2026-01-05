@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Brain, Code, Cpu, Download, ArrowRight } from 'lucide-react';
+import { Database, LineChart, Compass, Download, ArrowRight } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const scrollToContact = () => {
@@ -39,10 +40,9 @@ const Hero: React.FC = () => {
           className="max-w-2xl text-xl text-gray-400 leading-relaxed mb-10"
         >
           Creative and curious <span className="text-blue-400 font-semibold">AI & Data Science student</span> with a blend of design thinking and technical skills. 
-          Passionate about building practical and meaningful solutions.
+          Passionated about building practical and meaningful solutions.
         </motion.p>
 
-        {/* Skill Tags */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -51,24 +51,24 @@ const Hero: React.FC = () => {
         >
           <motion.div 
             whileHover={{ y: -5, scale: 1.05, borderColor: 'rgba(59, 130, 246, 0.5)' }}
-            className="flex items-center space-x-2 px-4 py-2 bg-gray-900 rounded-full shadow-lg border border-white/5 cursor-default"
+            className="flex items-center space-x-2 px-4 py-2 bg-gray-900 rounded-full shadow-lg border border-white/5 transition-colors cursor-default"
           >
-            <Brain size={18} className="text-blue-400" />
-            <span className="text-sm font-medium text-gray-300">AI Projects</span>
+            <Database size={18} className="text-blue-400" />
+            <span className="text-sm font-medium text-gray-300">Data Enthusiast</span>
           </motion.div>
           <motion.div 
             whileHover={{ y: -5, scale: 1.05, borderColor: 'rgba(168, 85, 247, 0.5)' }}
-            className="flex items-center space-x-2 px-4 py-2 bg-gray-900 rounded-full shadow-lg border border-white/5 cursor-default"
+            className="flex items-center space-x-2 px-4 py-2 bg-gray-900 rounded-full shadow-lg border border-white/5 transition-colors cursor-default"
           >
-            <Cpu size={18} className="text-purple-400" />
-            <span className="text-sm font-medium text-gray-300">IoT Systems</span>
+            <LineChart size={18} className="text-purple-400" />
+            <span className="text-sm font-medium text-gray-300">Analytical Thinker</span>
           </motion.div>
           <motion.div 
             whileHover={{ y: -5, scale: 1.05, borderColor: 'rgba(99, 102, 241, 0.5)' }}
-            className="flex items-center space-x-2 px-4 py-2 bg-gray-900 rounded-full shadow-lg border border-white/5 cursor-default"
+            className="flex items-center space-x-2 px-4 py-2 bg-gray-900 rounded-full shadow-lg border border-white/5 transition-colors cursor-default"
           >
-            <Code size={18} className="text-indigo-400" />
-            <span className="text-sm font-medium text-gray-300">Visual Design</span>
+            <Compass size={18} className="text-indigo-400" />
+            <span className="text-sm font-medium text-gray-300">Innovative Explorer</span>
           </motion.div>
         </motion.div>
 
@@ -88,12 +88,10 @@ const Hero: React.FC = () => {
             <ArrowRight size={18} />
           </motion.button>
 
-          {/* FIXED DOWNLOAD LINK */}
+          {/* Fully Fixed Download Link */}
           <motion.a
             href="/Resume.pdf"
             download="Tharaneesh_J_Resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
             whileHover={{ scale: 1.05, backgroundColor: 'rgba(31, 41, 55, 1)' }}
             whileTap={{ scale: 0.95 }}
             className="w-full sm:w-auto px-8 py-4 bg-gray-900 text-white rounded-2xl font-bold flex items-center justify-center space-x-3 shadow-xl border border-white/5 transition-all cursor-pointer"

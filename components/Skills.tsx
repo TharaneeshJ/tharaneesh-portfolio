@@ -13,7 +13,7 @@ const skillCategories: (SkillCategory & { icon: React.ReactNode })[] = [
   {
     title: 'Tools',
     icon: <Wrench size={24} />,
-    skills: ['VS Code', 'Canva', 'MS Excel', 'Power BI']
+    skills: ['Canva', 'MS Excel', 'Power BI', 'Tableau']
   },
   {
     title: 'Soft Skills',
