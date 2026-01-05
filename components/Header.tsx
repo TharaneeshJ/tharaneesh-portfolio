@@ -10,10 +10,9 @@ const Header: React.FC = () => {
 
   // Update active section on scroll
   useEffect(() => {
-    const observers = new Map();
     const options = {
       root: null,
-      rootMargin: '-20% 0px -70% 0px', // Trigger when section is in the upper middle of the viewport
+      rootMargin: '-20% 0px -70% 0px',
       threshold: 0
     };
 
@@ -40,8 +39,7 @@ const Header: React.FC = () => {
     if (element) {
       setIsMobileMenuOpen(false);
       
-      // Calculate offset manually for pixel-perfect precision
-      const headerHeight = 64; // 16 * 4px (h-16)
+      const headerHeight = 64;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
 
@@ -95,17 +93,8 @@ const Header: React.FC = () => {
           })}
         </nav>
 
-        <div className="flex items-center space-x-4">
-          <motion.button
-            whileHover={{ scale: 1.05, backgroundColor: '#3b82f6' }}
-            whileTap={{ scale: 0.95 }}
-            className="hidden sm:block bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium shadow-sm transition-all"
-            onClick={() => scrollToSection('contact')}
-          >
-            Hire Me
-          </motion.button>
-
-          {/* Mobile Toggle */}
+        <div className="flex items-center">
+          {/* Mobile Toggle - Kept for navigation on small screens */}
           <button 
             className="md:hidden p-2 text-gray-400"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -136,12 +125,6 @@ const Header: React.FC = () => {
                   {item}
                 </button>
               ))}
-              <button
-                onClick={() => scrollToSection('contact')}
-                className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium"
-              >
-                Hire Me
-              </button>
             </div>
           </motion.div>
         )}
