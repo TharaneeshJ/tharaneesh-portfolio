@@ -1,46 +1,52 @@
-# 👋 Hi, I'm Tharaneesh J
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .portfolio-card {
+      text-align: center;
+      padding: 40px 60px;
+      border: 1px solid #e5e5e5;
+      background: #ffffff;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+    .portfolio-card h2 {
+      margin-bottom: 20px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .portfolio-btn {
+      text-decoration: none;
+      color: #ffffff;
+      background: #000000;
+      padding: 12px 28px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transition: 0.3s ease;
+      display: inline-block;
+    }
+    .portfolio-btn:hover {
+      background: #333333;
+    }
+  </style>
+</head>
 
-Aspiring Data Analyst | AI & ML Enthusiast | Problem Solver  
+<body>
 
-I am a 3rd-year college student passionate about data analytics, AI-based systems, and building real-world projects that solve meaningful problems.
+  <div class="portfolio-card">
+    <h2>Portfolio Website</h2>
+    <a href="https://tharaneeshj.vercel.app" class="portfolio-btn">
+      Visit Website
+    </a>
+  </div>
 
----
-
-## 🚀 Portfolio
-🔗 https://tharaneeshj.vercel.app  
-
----
-
-## 🛠 Technical Skills
-
-- **Languages:** Python, Java, R  
-- **Data Tools:** Pandas, NumPy, Matplotlib  
-- **AI/ML:** YOLOv8, OpenCV, NLP Basics  
-- **Web Technologies:** HTML, CSS, Tailwind  
-- **Tools:** Git, GitHub, VS Code, Firebase  
-
----
-
-## 📌 Projects
-
-### 🔹 Real-Time Weapon Detection & Mobile Alert System
-AI-powered system using YOLOv8 that detects weapons in live video streams and sends real-time alerts.
-
-### 🔹 Resume Analyst
-ATS-based resume screening tool that evaluates resumes against job descriptions.
-
-### 🔹 Personal Health & Fitness Assistant
-Mobile app built with Flutter and FastAPI for workouts, diet planning, and health tracking.
-
----
-
-## 🎯 Career Goal
-
-To work in Data Analytics / AI roles at top companies like Intel, Infosys, TCS, and IBM where I can solve real-world problems using data.
-
----
-
-## 📫 Connect With Me
-
-- Portfolio: https://tharaneeshj.vercel.app  
-- GitHub: https://github.com/TharaneeshJ
+</body>
+</html>
