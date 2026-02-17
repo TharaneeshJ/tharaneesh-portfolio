@@ -70,16 +70,17 @@ const projectData: Project[] = [
   {
     title: 'Restaurant QR Ordering SaaS Product',
     description:
-      'Building a service product that enables customers to choose menu items and place orders directly from their table. n8n automate workflows, inspired by digital ordering systems from KFC and Burger King.',
-    tags: ['n8n', 'TypeScript', 'Excel'],
+      'Building a service product that enables customers to choose menu items and place orders directly from their table. Inspired by digital ordering systems from KFC and Burger King.',
+    tags: ['TypeScript', 'Excel'],
     category: 'SaaS',
     icon: <UtensilsCrossed size={16} />,
     domain: 'SaaS Product',
-    tools: 'n8n · TypeScript · Excel',
+    tools: 'TypeScript · Excel',
     solves:
       'Eliminates wait times and order errors in restaurants. Customers scan a QR code, browse the menu, and place orders instantly — no waiter needed. Reduces operational costs for restaurant owners.',
     works:
-      'QR codes link to a dynamic menu interface built with TypeScript. Orders flow through n8n automation pipelines to the kitchen display. Excel-based backend manages menu items, pricing, and order analytics for small restaurant owners.',
+      'QR codes link to a dynamic menu interface built with TypeScript. Excel-based backend manages menu items, pricing, and order analytics for small restaurant owners.',
+    github: 'https://github.com/TharaneeshJ/HotelMenuOrdering-SaaS',
   },
 ];
 

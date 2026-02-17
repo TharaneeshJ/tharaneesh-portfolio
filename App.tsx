@@ -10,7 +10,6 @@ import ExperienceTimeline from './components/ExperienceTimeline';
 import Projects from './components/Projects';
 import Education from './components/Education';
 import Contact from './components/Contact';
-
 import SkeletonLoader from './components/SkeletonLoader';
 import SectionSeparator from './components/SectionSeparator';
 
