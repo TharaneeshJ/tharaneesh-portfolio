@@ -2,13 +2,28 @@ import React, { useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { Eye, Siren, HeartPulse, UtensilsCrossed, X } from 'lucide-react';
+import { Eye, Siren, HeartPulse, UtensilsCrossed, X, Code, Github } from 'lucide-react';
 import { Project } from '../types';
 import { magneticHover, snapReturn } from '../lib/eases';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const projectData: Project[] = [
+  {
+    title: 'Personal Portfolio Website',
+    description:
+      'A modern, interactive portfolio website built with React, TypeScript, and GSAP. Features smooth animations, responsive design, and a dark aesthetic.',
+    tags: ['React', 'TypeScript', 'GSAP', 'Tailwind', 'Vite'],
+    category: 'Web Development',
+    icon: <Code size={16} />,
+    domain: 'Frontend Development',
+    tools: 'React · TypeScript · GSAP · Tailwind',
+    solves:
+      'Showcases technical skills and projects in an engaging, interactive format. Demonstrates proficiency in modern frontend technologies and animation libraries.',
+    works:
+      'Built with React and TypeScript for type-safe component architecture. GSAP powers the complex timeline-based animations and scroll interactions. Tailwind CSS handles the responsive styling.',
+    github: 'https://github.com/TharaneeshJ/tharaneesh-portfolio',
+  },
   {
     title: 'Real-Time Weapon Detection System',
     description:
@@ -452,6 +467,21 @@ const Projects: React.FC = () => {
                     ))}
                   </div>
                 </div>
+
+                {/* GitHub Link */}
+                {activeProject.github && (
+                  <div className="mt-6 pt-4 border-t border-white/[0.06]">
+                    <a
+                      href={activeProject.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white hover:text-cyan-400 transition-colors"
+                    >
+                      <Github size={16} />
+                      <span>View Source on GitHub</span>
+                    </a>
+                  </div>
+                )}
               </>
             )}
           </div>

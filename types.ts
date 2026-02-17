@@ -11,6 +11,7 @@ export interface Project {
   tools?: string;
   solves?: string;
   works?: string;
+  github?: string;
 }
 
 export interface Experience {
