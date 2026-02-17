@@ -10,8 +10,9 @@ import ExperienceTimeline from './components/ExperienceTimeline';
 import Projects from './components/Projects';
 import Education from './components/Education';
 import Contact from './components/Contact';
-import MouseEffect from './components/MouseEffect';
+
 import SkeletonLoader from './components/SkeletonLoader';
+import SectionSeparator from './components/SectionSeparator';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -53,8 +54,6 @@ const App: React.FC = () => {
 
       <SmoothScroller>
         <div ref={appRef} className="relative min-h-screen bg-black">
-          <MouseEffect />
-
           {/* Scroll Progress Bar */}
           <div
             ref={progressBarRef}
@@ -68,22 +67,27 @@ const App: React.FC = () => {
             <section className="min-h-screen flex items-center justify-center bg-black relative">
               <Hero isLoading={isLoading} />
             </section>
+            <SectionSeparator />
 
             <section className="bg-black py-16 sm:py-24 relative" id="skills">
               <Skills />
             </section>
+            <SectionSeparator />
 
             <section className="bg-black py-16 sm:py-24 relative" id="experience">
               <ExperienceTimeline />
             </section>
+            <SectionSeparator />
 
             <section className="bg-black py-16 sm:py-24 relative" id="projects">
               <Projects />
             </section>
+            <SectionSeparator />
 
             <section className="bg-black py-16 sm:py-24 relative" id="education">
               <Education />
             </section>
+            <SectionSeparator />
 
             <section className="bg-black py-16 sm:py-24 text-white relative" id="contact">
               <Contact />

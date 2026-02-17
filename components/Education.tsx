@@ -79,7 +79,7 @@ const Education: React.FC = () => {
 
   return (
     <div ref={containerRef} className="max-w-7xl mx-auto px-4 sm:px-6">
-      <div ref={headingRef} className="mb-10 sm:mb-16" style={{ opacity: 0 }}>
+      <div ref={headingRef} className="mb-10 sm:mb-16 opacity-0">
         <span className="label">Education</span>
         <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4 text-white tracking-tight">
           Academic Background
@@ -87,7 +87,7 @@ const Education: React.FC = () => {
         <div className="accent-line" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/[0.06]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         {educationData.map((edu, idx) => (
           <div
             key={edu.degree}
@@ -96,8 +96,7 @@ const Education: React.FC = () => {
             }}
             onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
             onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
-            style={{ opacity: 0 }}
-            className="p-6 sm:p-8 md:p-10 bg-black border border-white/[0.06] transition-colors duration-300 cursor-default group will-change-transform"
+            className="p-6 sm:p-8 md:p-10 bg-black border border-white/[0.06] transition-colors duration-300 cursor-default group will-change-transform opacity-0"
           >
             <div className="flex items-start justify-between mb-6">
               {/* Icon — small color accent */}

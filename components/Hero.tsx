@@ -20,10 +20,9 @@ const Hero: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
   const { contextSafe } = useGSAP(
     () => {
       // Always set initial state so it's hidden during loading
+      // (The timeline below will handle the 'from' state, but this prevents FOUC)
       gsap.set(revealTextsRef.current.filter(Boolean), {
-        y: '110%',
-        skewY: 7,
-        opacity: 1,
+        opacity: 0,
       });
       gsap.set(imageRef.current, {
         opacity: 0,
@@ -59,20 +58,21 @@ const Hero: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
       );
 
       // 3. Slit-reveal name animation — expo ease for premium feel
-      tl.to(
-        revealTextsRef.current.filter(Boolean),
-        {
-          y: 0,
-          skewY: 0,
-          duration: 1.8,
-          ease: 'expo.out',
-          stagger: {
-            amount: 0.3,
-            from: 'start',
+      // 3. Simple fade-up for single line title
+      if (revealTextsRef.current[0]) {
+        tl.fromTo(
+          revealTextsRef.current[0],
+          { y: 50, opacity: 0, rotateZ: 3 },
+          {
+            y: 0,
+            opacity: 1,
+            rotateZ: 0,
+            duration: 1.5,
+            ease: 'expo.out',
           },
-        },
-        '-=1.0'
-      );
+          '-=0.8'
+        );
+      }
 
       // 4. Sub-reveal description
       tl.fromTo(
@@ -164,33 +164,9 @@ const Hero: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
             </div>
 
             {/* Name — Slit Reveal */}
-            <h1 className="mb-6 sm:mb-8 uppercase font-black tracking-tighter leading-[0.95]">
-              {/* Line 1: "Tharaneesh" */}
-              <span
-                className="block overflow-hidden"
-                style={{ height: 'clamp(48px, 10vw, 110px)' }}
-              >
-                <span
-                  ref={(el) => { revealTextsRef.current[0] = el; }}
-                  className="block text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white will-change-transform"
-                  style={{ opacity: 0 }}
-                >
-                  Tharaneesh
-                </span>
-              </span>
-
-              {/* Line 2: "J" */}
-              <span
-                className="block overflow-hidden"
-                style={{ height: 'clamp(48px, 10vw, 110px)' }}
-              >
-                <span
-                  ref={(el) => { revealTextsRef.current[1] = el; }}
-                  className="block text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-neutral-600 will-change-transform"
-                  style={{ opacity: 0 }}
-                >
-                  J
-                </span>
+            <h1 className="mb-6 sm:mb-8 font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white tracking-tight leading-none">
+              <span ref={(el) => { revealTextsRef.current[0] = el; }} className="block will-change-transform whitespace-nowrap" style={{ opacity: 0 }}>
+                Tharaneesh J
               </span>
             </h1>
 

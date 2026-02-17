@@ -77,7 +77,7 @@ const ExperienceTimeline: React.FC = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6" ref={containerRef}>
-      <div ref={headingRef} className="mb-10 sm:mb-16" style={{ opacity: 0 }}>
+      <div ref={headingRef} className="mb-10 sm:mb-16 opacity-0">
         <span className="label">Career</span>
         <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4 text-white tracking-tight">
           Professional Journey
@@ -94,8 +94,7 @@ const ExperienceTimeline: React.FC = () => {
             }}
             onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
             onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
-            style={{ opacity: 0 }}
-            className="p-6 sm:p-8 md:p-10 bg-black border border-white/[0.06] transition-colors duration-300 group cursor-default will-change-transform"
+            className="p-6 sm:p-8 md:p-10 bg-black border border-white/[0.06] transition-colors duration-300 group cursor-default will-change-transform opacity-0"
           >
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
               <div>

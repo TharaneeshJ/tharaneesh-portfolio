@@ -121,7 +121,7 @@ const Contact: React.FC = () => {
         <div className="accent-line" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {contactCards.map((card, idx) => (
           <div
             key={card.label}

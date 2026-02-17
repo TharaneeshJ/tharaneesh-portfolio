@@ -282,7 +282,7 @@ const Projects: React.FC = () => {
           <div className="accent-line" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {projectData.map((project, idx) => {
             const iconColor = iconColors[idx % iconColors.length];
             return (
