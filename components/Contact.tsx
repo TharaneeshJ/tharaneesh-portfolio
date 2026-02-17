@@ -1,118 +1,156 @@
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { Mail, Github, Linkedin, Phone, ArrowUpRight } from 'lucide-react';
+import { magneticHover, snapReturn } from '../lib/eases';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Github, Linkedin, Send, Phone } from 'lucide-react';
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Contact: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
   const handleEmailClick = () => {
-    window.location.href = "mailto:tharaneeshj@gmail.com?subject=Inquiry from Portfolio";
+    window.location.href = 'mailto:tharaneeshj@gmail.com?subject=Inquiry from Portfolio';
   };
-
   const handleLinkedInClick = () => {
-    window.open("https://www.linkedin.com/in/tharaneeshj", "_blank");
+    window.open('https://www.linkedin.com/in/tharaneeshj', '_blank');
   };
-
   const handleGithubClick = () => {
-    window.open("https://github.com/TharaneeshJ", "_blank");
+    window.open('https://github.com/TharaneeshJ', '_blank');
+  };
+  const handlePhoneClick = () => {
+    window.location.href = 'tel:+917395936932';
   };
 
-  const handlePhoneClick = () => {
-    window.location.href = "tel:+917395936932";
-  };
+  const { contextSafe } = useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none none',
+        },
+        defaults: { ease: 'power3.out', force3D: true },
+      });
+
+      tl.fromTo(
+        headingRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.7 }
+      ).fromTo(
+        cardsRef.current.filter(Boolean),
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.08,
+        },
+        '-=0.3'
+      );
+    },
+    { scope: containerRef }
+  );
+
+  const handleCardHover = contextSafe(
+    (el: HTMLDivElement | null, enter: boolean) => {
+      if (!el) return;
+      gsap.to(el, {
+        y: enter ? -6 : 0,
+        borderColor: enter ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.06)',
+        duration: enter ? 0.6 : 0.5,
+        ease: enter ? magneticHover : snapReturn,
+        overwrite: true,
+        force3D: true,
+      });
+    }
+  );
+
+  /* Icon colors — small multi-color accents */
+  const contactCards = [
+    {
+      label: 'Email',
+      value: 'tharaneeshj@gmail.com',
+      action: 'Send Message',
+      onClick: handleEmailClick,
+      icon: <Mail size={20} />,
+      iconColor: 'text-rose-400',
+    },
+    {
+      label: 'LinkedIn',
+      value: 'linkedin.com/in/tharaneeshj',
+      action: 'View Profile',
+      onClick: handleLinkedInClick,
+      icon: <Linkedin size={20} />,
+      iconColor: 'text-sky-400',
+    },
+    {
+      label: 'GitHub',
+      value: 'github.com/TharaneeshJ',
+      action: 'View Projects',
+      onClick: handleGithubClick,
+      icon: <Github size={20} />,
+      iconColor: 'text-white',
+    },
+    {
+      label: 'Phone',
+      value: '+91 73959 36932',
+      action: 'Call Now',
+      onClick: handlePhoneClick,
+      icon: <Phone size={20} />,
+      iconColor: 'text-emerald-400',
+    },
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 text-center">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-      >
-        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white">
-          Let's connect and build something <span className="text-blue-400">incredible</span> together.
+    <div ref={containerRef} className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div ref={headingRef} className="mb-10 sm:mb-16 opacity-0">
+        <span className="label">Contact</span>
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mt-3 mb-4 sm:mb-6 text-white tracking-tight max-w-2xl">
+          Let's connect and build something{' '}
+          <span className="text-neutral-500">incredible</span> together.
         </h2>
-        <p className="text-gray-400 text-lg mb-16 leading-relaxed max-w-2xl mx-auto">
-          I'm currently seeking opportunities to apply my AI and Data Science skills to real-world challenges. 
-          Feel free to reach out for collaborations or just a friendly chat about tech!
+        <p className="text-neutral-600 text-sm sm:text-base leading-relaxed max-w-xl mb-4">
+          I'm currently seeking opportunities to apply my AI and Data Science skills to real-world
+          challenges. Feel free to reach out for collaborations or just a friendly chat about tech.
         </p>
+        <div className="accent-line" />
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* 1. Email Card */}
-          <motion.div 
-            whileHover={{ y: -5 }}
-            onClick={handleEmailClick}
-            className="flex flex-col items-center p-8 bg-gray-900/40 backdrop-blur-xl border border-white/5 rounded-[2.5rem] group hover:border-blue-400/30 transition-all cursor-pointer"
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06]">
+        {contactCards.map((card, idx) => (
+          <div
+            key={card.label}
+            ref={(el) => {
+              cardsRef.current[idx] = el;
+            }}
+            onClick={card.onClick}
+            onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
+            onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
+            className="flex flex-col p-6 sm:p-8 bg-black border border-white/[0.06] group hover:bg-neutral-950 transition-all cursor-pointer opacity-0 will-change-transform"
           >
-            <div className="w-14 h-14 mb-4 flex items-center justify-center bg-gray-950 rounded-2xl text-blue-400 border border-white/5 group-hover:bg-blue-400 group-hover:text-white transition-all shadow-lg">
-              <Mail size={28} />
+            {/* Icon — multi-color accent */}
+            <div className={`w-10 h-10 mb-6 flex items-center justify-center border border-white/[0.08] ${card.iconColor} group-hover:border-white/20 transition-all`}>
+              {card.icon}
             </div>
-            <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">Email Me</p>
-            <span className="text-sm text-white group-hover:text-blue-400 transition-colors break-all mb-4">
-              tharaneeshj@gmail.com
-            </span>
-            <div className="mt-auto flex items-center space-x-2 text-xs font-semibold text-blue-400 group-hover:translate-x-1 transition-transform">
-              <span>Send Message</span>
-              <Send size={12} />
-            </div>
-          </motion.div>
 
-          {/* 2. LinkedIn Card (Network) */}
-          <motion.div 
-            whileHover={{ y: -5 }}
-            onClick={handleLinkedInClick}
-            className="flex flex-col items-center p-8 bg-gray-900/40 backdrop-blur-xl border border-white/5 rounded-[2.5rem] group hover:border-blue-600/30 transition-all cursor-pointer"
-          >
-            <div className="w-14 h-14 mb-4 flex items-center justify-center bg-gray-950 rounded-2xl text-blue-600 border border-white/5 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-lg">
-              <Linkedin size={28} />
-            </div>
-            <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">Network</p>
-            <span className="text-sm text-white group-hover:text-blue-400 transition-colors mb-4">
-              LinkedIn Profile
+            <p className="text-[10px] text-neutral-700 uppercase font-bold tracking-[0.15em] mb-1">
+              {card.label}
+            </p>
+            <span className="text-sm text-neutral-400 group-hover:text-white transition-colors break-all mb-6 font-mono">
+              {card.value}
             </span>
-            <div className="mt-auto flex items-center space-x-2 text-xs font-semibold text-blue-600 group-hover:translate-x-1 transition-transform">
-              <span>View Profile</span>
-              <Linkedin size={12} />
-            </div>
-          </motion.div>
 
-          {/* 3. GitHub Card (Source Code) */}
-          <motion.div 
-            whileHover={{ y: -5 }}
-            onClick={handleGithubClick}
-            className="flex flex-col items-center p-8 bg-gray-900/40 backdrop-blur-xl border border-white/5 rounded-[2.5rem] group hover:border-gray-400/30 transition-all cursor-pointer"
-          >
-            <div className="w-14 h-14 mb-4 flex items-center justify-center bg-gray-950 rounded-2xl text-gray-400 border border-white/5 group-hover:bg-white group-hover:text-gray-950 transition-all shadow-lg">
-              <Github size={28} />
+            <div className="mt-auto flex items-center gap-2 text-xs font-semibold text-neutral-700 group-hover:text-white transition-colors">
+              <span>{card.action}</span>
+              <ArrowUpRight size={12} />
             </div>
-            <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">Source Code</p>
-            <span className="text-sm text-white group-hover:text-gray-300 transition-colors mb-4">
-              GitHub Profile
-            </span>
-            <div className="mt-auto flex items-center space-x-2 text-xs font-semibold text-gray-400 group-hover:translate-x-1 transition-transform">
-              <span>View Projects</span>
-              <Github size={12} />
-            </div>
-          </motion.div>
-
-          {/* 4. Phone Card (Call Me) */}
-          <motion.div 
-            whileHover={{ y: -5 }}
-            onClick={handlePhoneClick}
-            className="flex flex-col items-center p-8 bg-gray-900/40 backdrop-blur-xl border border-white/5 rounded-[2.5rem] group hover:border-emerald-400/30 transition-all cursor-pointer"
-          >
-            <div className="w-14 h-14 mb-4 flex items-center justify-center bg-gray-950 rounded-2xl text-emerald-400 border border-white/5 group-hover:bg-emerald-400 group-hover:text-white transition-all shadow-lg">
-              <Phone size={28} />
-            </div>
-            <p className="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">Call Me</p>
-            <span className="text-sm text-white group-hover:text-emerald-400 transition-colors mb-4">
-              +91 73959 36932
-            </span>
-            <div className="mt-auto flex items-center space-x-2 text-xs font-semibold text-emerald-400 group-hover:translate-x-1 transition-transform">
-              <span>Call Now</span>
-              <Phone size={12} />
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

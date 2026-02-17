@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 export interface Project {
   title: string;
   description: string;

@@ -1,71 +1,62 @@
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
-import React, { useEffect } from 'react';
-import { motion, useSpring, useMotionValue } from 'framer-motion';
+gsap.registerPlugin(useGSAP);
 
 const MouseEffect: React.FC = () => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
 
-  // Smooth spring configuration for the glow
-  const springX = useSpring(mouseX, { damping: 40, stiffness: 250 });
-  const springY = useSpring(mouseY, { damping: 40, stiffness: 250 });
+  useGSAP(
+    () => {
+      const handleMouseMove = (e: MouseEvent) => {
+        const x = e.clientX;
+        const y = e.clientY;
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
-    };
+        gsap.to(outerRef.current, {
+          x: x - 300,
+          y: y - 300,
+          duration: 1.4,
+          ease: 'power2.out',
+          force3D: true,
+        });
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
+        gsap.to(innerRef.current, {
+          x: x - 100,
+          y: y - 100,
+          duration: 0.7,
+          ease: 'power2.out',
+          force3D: true,
+        });
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+      };
+    },
+    { scope: containerRef }
+  );
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden bg-gray-950">
-      {/* Background Gradients for Depth */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-30">
-        <div className="absolute top-[-15%] left-[-10%] w-[70%] h-[70%] bg-blue-900/20 rounded-full blur-[160px]" />
-        <div className="absolute bottom-[-15%] right-[-10%] w-[70%] h-[70%] bg-purple-900/20 rounded-full blur-[160px]" />
-      </div>
-
-      {/* Main Interactive Glow - Outer Layer */}
-      <motion.div
-        className="absolute w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[140px]"
-        style={{
-          x: springX,
-          y: springY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
+    <div ref={containerRef} className="fixed inset-0 pointer-events-none z-[1] overflow-hidden bg-black">
+      {/* Outer glow — white/neutral only */}
+      <div
+        ref={outerRef}
+        className="absolute w-[600px] h-[600px] bg-white/[0.02] blur-[120px] will-change-transform"
       />
 
-      {/* Main Interactive Glow - Mid Layer */}
-      <motion.div
-        className="absolute w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px]"
-        style={{
-          x: springX,
-          y: springY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
+      {/* Inner focus */}
+      <div
+        ref={innerRef}
+        className="absolute w-[200px] h-[200px] bg-white/[0.04] blur-[80px] will-change-transform"
       />
 
-      {/* Main Interactive Glow - Inner Focus */}
-      <motion.div
-        className="absolute w-[150px] h-[150px] bg-blue-400/10 rounded-full blur-[60px]"
-        style={{
-          x: springX,
-          y: springY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
-      />
-
-      {/* Subtle Scanline/Grid Overlay to catch the light */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:80px_80px] opacity-20" />
-      
-      {/* Noise Texture for organic feel */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      {/* Subtle grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px] opacity-20" />
     </div>
   );
 };

@@ -1,70 +1,127 @@
-
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { Code2, Wrench, Users, Languages } from 'lucide-react';
 import { SkillCategory } from '../types';
+import { magneticHover, snapReturn } from '../lib/eases';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+/* Multi-color only on icons */
+const iconColors = ['text-emerald-400', 'text-amber-400', 'text-violet-400', 'text-rose-400'];
 
 const skillCategories: (SkillCategory & { icon: React.ReactNode })[] = [
   {
     title: 'Technical Skills',
-    icon: <Code2 size={24} />,
-    skills: ['Java', 'Python']
+    icon: <Code2 size={20} />,
+    skills: ['Java', 'Python'],
   },
   {
     title: 'Tools',
-    icon: <Wrench size={24} />,
-    skills: ['Canva', 'MS Excel', 'Power BI', 'Tableau']
+    icon: <Wrench size={20} />,
+    skills: ['Canva', 'MS Excel', 'Power BI', 'Tableau'],
   },
   {
     title: 'Soft Skills',
-    icon: <Users size={24} />,
-    skills: ['Creativity', 'Problem Solving', 'Adaptability', 'Time Management', 'Teamwork']
+    icon: <Users size={20} />,
+    skills: ['Creativity', 'Problem Solving', 'Adaptability', 'Time Management', 'Teamwork'],
   },
   {
     title: 'Languages',
-    icon: <Languages size={24} />,
-    skills: ['English', 'Tamil']
-  }
+    icon: <Languages size={20} />,
+    skills: ['English', 'Tamil'],
+  },
 ];
 
 const Skills: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const { contextSafe } = useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+        defaults: { ease: 'power2.out', force3D: true },
+      });
+
+      tl.fromTo(
+        headingRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 }
+      ).fromTo(
+        cardsRef.current.filter(Boolean),
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+        },
+        '-=0.2'
+      );
+    },
+    { scope: containerRef }
+  );
+
+  const handleCardHover = contextSafe(
+    (el: HTMLDivElement | null, enter: boolean) => {
+      if (!el) return;
+      gsap.to(el, {
+        y: enter ? -6 : 0,
+        borderColor: enter ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.06)',
+        duration: enter ? 0.6 : 0.5,
+        ease: enter ? magneticHover : snapReturn,
+        overwrite: true,
+        force3D: true,
+      });
+    }
+  );
+
   return (
-    <div className="max-w-7xl mx-auto px-6">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold mb-4 text-white">Core Competencies</h2>
-        <div className="h-1 w-20 bg-blue-500 mx-auto rounded-full" />
+    <div ref={containerRef} className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div ref={headingRef} className="mb-10 sm:mb-16 opacity-0">
+        <span className="label">Capabilities</span>
+        <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4 text-white tracking-tight">
+          Core Competencies
+        </h2>
+        <div className="accent-line" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06]">
         {skillCategories.map((cat, idx) => (
-          <motion.div
+          <div
             key={cat.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
-            whileHover={{ 
-              y: -10,
-              boxShadow: "0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04)"
+            ref={(el) => {
+              cardsRef.current[idx] = el;
             }}
-            className="p-8 rounded-2xl bg-gray-900/50 border border-white/5 hover:border-blue-500/40 hover:bg-gray-900 transition-all duration-300 group cursor-default"
+            onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
+            onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
+            className="p-6 sm:p-8 bg-black border border-white/[0.06] hover:bg-neutral-950 transition-all duration-300 group cursor-default opacity-0"
           >
-            <div className="text-blue-400 mb-6 bg-gray-800 w-12 h-12 flex items-center justify-center rounded-xl shadow-inner group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
+            {/* Icon — multi-color accent */}
+            <div className={`mb-6 w-10 h-10 flex items-center justify-center border border-white/[0.08] ${iconColors[idx]} group-hover:border-white/20 transition-all duration-300`}>
               {cat.icon}
             </div>
-            <h3 className="text-lg font-bold mb-4 text-gray-100 group-hover:text-blue-400 transition-colors">{cat.title}</h3>
+            <h3 className="text-sm font-semibold mb-4 text-neutral-300 uppercase tracking-wider group-hover:text-white transition-colors">
+              {cat.title}
+            </h3>
             <div className="flex flex-wrap gap-2">
-              {cat.skills.map(skill => (
-                <motion.span 
+              {cat.skills.map((skill) => (
+                <span
                   key={skill}
-                  whileHover={{ scale: 1.1, backgroundColor: '#1f2937' }}
-                  className="px-3 py-1 bg-gray-800 text-xs font-medium text-gray-400 rounded-lg border border-white/5 transition-colors"
+                  className="px-3 py-1.5 bg-neutral-950 text-[11px] font-medium text-neutral-600 border border-white/[0.04] group-hover:text-neutral-400 group-hover:border-white/[0.08] transition-colors"
                 >
                   {skill}
-                </motion.span>
+                </span>
               ))}
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>

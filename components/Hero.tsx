@@ -1,105 +1,173 @@
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { ArrowRight, Download } from 'lucide-react';
+import { magneticHover, snapReturn } from '../lib/eases';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Database, LineChart, Compass, Download, ArrowRight } from 'lucide-react';
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Hero: React.FC = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const metaRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const { contextSafe } = useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        defaults: { ease: 'power3.out', force3D: true },
+      });
+
+      tl.fromTo(
+        labelRef.current,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.5 }
+      )
+        .fromTo(
+          nameRef.current,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          '-=0.2'
+        )
+        .fromTo(
+          descRef.current,
+          { opacity: 0, y: 25 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          '-=0.35'
+        )
+        .fromTo(
+          metaRef.current,
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.5 },
+          '-=0.25'
+        )
+        .fromTo(
+          ctaRef.current?.children
+            ? Array.from(ctaRef.current.children)
+            : [],
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.1,
+          },
+          '-=0.2'
+        );
+
+      if (contentRef.current) {
+        gsap.to(contentRef.current, {
+          y: -80,
+          opacity: 0.2,
+          ease: 'none',
+          force3D: true,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      }
+    },
+    { scope: sectionRef }
+  );
+
+  const handleButtonHover = contextSafe(
+    (
+      e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
+      enter: boolean
+    ) => {
+      gsap.to(e.currentTarget, {
+        y: enter ? -4 : 0,
+        duration: enter ? 0.5 : 0.4,
+        ease: enter ? magneticHover : snapReturn,
+        overwrite: true,
+        force3D: true,
+      });
+    }
+  );
+
   const scrollToContact = () => {
     const element = document.getElementById('contact');
     if (element) {
       window.scrollTo({
         top: element.offsetTop - 64,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
   };
 
   return (
-    <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto flex flex-col items-center text-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="mb-8 px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-xs font-bold uppercase tracking-widest"
-        >
-          Available for Opportunities
-        </motion.div>
+    <section ref={sectionRef} className="relative pt-24 sm:pt-32 md:pt-40 pb-16 sm:pb-24 px-4 sm:px-6 min-h-[85vh] sm:min-h-[90vh]">
+      <div ref={contentRef} className="max-w-4xl mx-auto relative z-10 will-change-transform">
+        {/* Label */}
+        <div ref={labelRef} className="mb-8 opacity-0">
+          <span className="label">Available for Opportunities</span>
+          <div className="accent-line mt-3" />
+        </div>
 
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6"
+        {/* Name */}
+        <h1
+          ref={nameRef}
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] mb-6 sm:mb-8 opacity-0"
         >
-          Tharaneesh J
-        </motion.h1>
+          Tharaneesh
+          <br />
+          <span className="text-neutral-600">J</span>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="max-w-2xl text-xl text-gray-400 leading-relaxed mb-10"
+        {/* Description */}
+        <p
+          ref={descRef}
+          className="max-w-xl text-base sm:text-lg text-neutral-500 leading-relaxed mb-6 sm:mb-8 opacity-0"
         >
-          Creative and curious <span className="text-blue-400 font-semibold">AI & Data Science student</span> with a blend of design thinking and technical skills. 
-          Passionated about building practical and meaningful solutions.
-        </motion.p>
+          Creative and curious{' '}
+          <span className="text-white font-medium">AI & Data Science student</span> with a
+          blend of design thinking and technical skills. Passionate about building practical and
+          meaningful solutions.
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-4 mb-12"
-        >
-          <motion.div 
-            whileHover={{ y: -5, scale: 1.05, borderColor: 'rgba(59, 130, 246, 0.5)' }}
-            className="flex items-center space-x-2 px-4 py-2 bg-gray-900 rounded-full shadow-lg border border-white/5 transition-colors cursor-default"
-          >
-            <Database size={18} className="text-blue-400" />
-            <span className="text-sm font-medium text-gray-300">Data Enthusiast</span>
-          </motion.div>
-          <motion.div 
-            whileHover={{ y: -5, scale: 1.05, borderColor: 'rgba(168, 85, 247, 0.5)' }}
-            className="flex items-center space-x-2 px-4 py-2 bg-gray-900 rounded-full shadow-lg border border-white/5 transition-colors cursor-default"
-          >
-            <LineChart size={18} className="text-purple-400" />
-            <span className="text-sm font-medium text-gray-300">Analytical Thinker</span>
-          </motion.div>
-          <motion.div 
-            whileHover={{ y: -5, scale: 1.05, borderColor: 'rgba(99, 102, 241, 0.5)' }}
-            className="flex items-center space-x-2 px-4 py-2 bg-gray-900 rounded-full shadow-lg border border-white/5 transition-colors cursor-default"
-          >
-            <Compass size={18} className="text-indigo-400" />
-            <span className="text-sm font-medium text-gray-300">Innovative Explorer</span>
-          </motion.div>
-        </motion.div>
+        {/* Meta tags */}
+        <div ref={metaRef} className="flex flex-wrap gap-3 sm:gap-6 mb-8 sm:mb-12 opacity-0">
+          <span className="text-xs font-medium text-neutral-600 uppercase tracking-wider border-l border-neutral-700 pl-3">
+            Data Enthusiast
+          </span>
+          <span className="text-xs font-medium text-neutral-600 uppercase tracking-wider border-l border-neutral-700 pl-3">
+            Analytical Thinker
+          </span>
+          <span className="text-xs font-medium text-neutral-600 uppercase tracking-wider border-l border-neutral-700 pl-3">
+            Innovative Explorer
+          </span>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center gap-4"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05, backgroundColor: '#1d4ed8' }}
-            whileTap={{ scale: 0.95 }}
+        {/* CTA — color accents allowed here */}
+        <div ref={ctaRef} className="flex flex-col sm:flex-row items-start gap-4">
+          <button
+            onMouseEnter={(e) => handleButtonHover(e, true)}
+            onMouseLeave={(e) => handleButtonHover(e, false)}
             onClick={scrollToContact}
-            className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold flex items-center justify-center space-x-3 shadow-2xl shadow-blue-500/20 transition-all border border-blue-400/20"
+            className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-black text-sm font-semibold flex items-center justify-center gap-3 border border-white hover:bg-neutral-200 transition-colors opacity-0 will-change-transform w-full sm:w-auto"
           >
             <span>Hire Me</span>
-            <ArrowRight size={18} />
-          </motion.button>
+            <ArrowRight size={16} />
+          </button>
 
-          {/* Fully Fixed Download Link */}
-          <motion.a
+          <a
             href="/Resume.pdf"
             download="Tharaneesh_J_Resume.pdf"
-            whileHover={{ scale: 1.05, backgroundColor: 'rgba(31, 41, 55, 1)' }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full sm:w-auto px-8 py-4 bg-gray-900 text-white rounded-2xl font-bold flex items-center justify-center space-x-3 shadow-xl border border-white/5 transition-all cursor-pointer"
+            onMouseEnter={(e) => handleButtonHover(e, true)}
+            onMouseLeave={(e) => handleButtonHover(e, false)}
+            className="px-6 sm:px-8 py-3 sm:py-4 bg-transparent text-white text-sm font-semibold flex items-center justify-center gap-3 border border-neutral-800 hover:border-neutral-500 transition-colors cursor-pointer opacity-0 will-change-transform w-full sm:w-auto"
           >
-            <Download size={18} className="text-blue-400" />
+            <Download size={16} className="text-neutral-500" />
             <span>Download Resume</span>
-          </motion.a>
-        </motion.div>
+          </a>
+        </div>
       </div>
     </section>
   );
