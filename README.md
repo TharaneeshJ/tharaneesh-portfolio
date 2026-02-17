@@ -1,20 +1,46 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 👋 Hi, I'm Tharaneesh J
 
-# Run and deploy your AI Studio app
+Aspiring Data Analyst | AI & ML Enthusiast | Problem Solver  
 
-This contains everything you need to run your app locally.
+I am a 3rd-year college student passionate about data analytics, AI-based systems, and building real-world projects that solve meaningful problems.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1Ul5CRJn2RwZYB15Z0dQQEpsDaNP3p1fv
+---
 
-## Run Locally
+## 🚀 Portfolio
+🔗 https://tharaneeshj.vercel.app  
 
-**Prerequisites:**  Node.js
+---
 
+## 🛠 Technical Skills
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- **Languages:** Python, Java, R  
+- **Data Tools:** Pandas, NumPy, Matplotlib  
+- **AI/ML:** YOLOv8, OpenCV, NLP Basics  
+- **Web Technologies:** HTML, CSS, Tailwind  
+- **Tools:** Git, GitHub, VS Code, Firebase  
+
+---
+
+## 📌 Projects
+
+### 🔹 Real-Time Weapon Detection & Mobile Alert System
+AI-powered system using YOLOv8 that detects weapons in live video streams and sends real-time alerts.
+
+### 🔹 Resume Analyst
+ATS-based resume screening tool that evaluates resumes against job descriptions.
+
+### 🔹 Personal Health & Fitness Assistant
+Mobile app built with Flutter and FastAPI for workouts, diet planning, and health tracking.
+
+---
+
+## 🎯 Career Goal
+
+To work in Data Analytics / AI roles at top companies like Intel, Infosys, TCS, and IBM where I can solve real-world problems using data.
+
+---
+
+## 📫 Connect With Me
+
+- Portfolio: https://tharaneeshj.vercel.app  
+- GitHub: https://github.com/TharaneeshJ
