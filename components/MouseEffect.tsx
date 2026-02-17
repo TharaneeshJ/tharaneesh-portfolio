@@ -42,7 +42,7 @@ const MouseEffect: React.FC = () => {
   );
 
   return (
-    <div ref={containerRef} className="fixed inset-0 pointer-events-none z-[1] overflow-hidden bg-black">
+    <div ref={containerRef} className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {/* Outer glow — white/neutral only */}
       <div
         ref={outerRef}

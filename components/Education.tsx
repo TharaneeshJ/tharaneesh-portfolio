@@ -31,7 +31,11 @@ const Education: React.FC = () => {
   const { contextSafe } = useGSAP(
     () => {
       const tl = gsap.timeline({
-        delay: 0.2,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
         defaults: { ease: 'power2.out', force3D: true },
       });
 
@@ -63,6 +67,7 @@ const Education: React.FC = () => {
       if (!el) return;
       gsap.to(el, {
         y: enter ? -6 : 0,
+        backgroundColor: enter ? '#0a0a0a' : '#000000',
         borderColor: enter ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.06)',
         duration: enter ? 0.6 : 0.5,
         ease: enter ? magneticHover : snapReturn,
@@ -92,7 +97,7 @@ const Education: React.FC = () => {
             onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
             onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
             style={{ opacity: 0 }}
-            className="p-6 sm:p-8 md:p-10 bg-black border border-white/[0.06] hover:bg-neutral-950 transition-all cursor-default group will-change-transform"
+            className="p-6 sm:p-8 md:p-10 bg-black border border-white/[0.06] transition-colors duration-300 cursor-default group will-change-transform"
           >
             <div className="flex items-start justify-between mb-6">
               {/* Icon — small color accent */}

@@ -74,6 +74,7 @@ const Skills: React.FC = () => {
       if (!el) return;
       gsap.to(el, {
         y: enter ? -6 : 0,
+        backgroundColor: enter ? '#0a0a0a' : '#000000',
         borderColor: enter ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.06)',
         duration: enter ? 0.6 : 0.5,
         ease: enter ? magneticHover : snapReturn,
@@ -102,7 +103,7 @@ const Skills: React.FC = () => {
             }}
             onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
             onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
-            className="p-6 sm:p-8 bg-black border border-white/[0.06] hover:bg-neutral-950 transition-all duration-300 group cursor-default opacity-0"
+            className="p-6 sm:p-8 bg-black border border-white/[0.06] transition-colors duration-300 group cursor-default opacity-0"
           >
             {/* Icon — multi-color accent */}
             <div className={`mb-6 w-10 h-10 flex items-center justify-center border border-white/[0.08] ${iconColors[idx]} group-hover:border-white/20 transition-all duration-300`}>

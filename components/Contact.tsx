@@ -60,6 +60,7 @@ const Contact: React.FC = () => {
       if (!el) return;
       gsap.to(el, {
         y: enter ? -6 : 0,
+        backgroundColor: enter ? '#0a0a0a' : '#000000',
         borderColor: enter ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.06)',
         duration: enter ? 0.6 : 0.5,
         ease: enter ? magneticHover : snapReturn,
@@ -130,7 +131,7 @@ const Contact: React.FC = () => {
             onClick={card.onClick}
             onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
             onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
-            className="flex flex-col p-6 sm:p-8 bg-black border border-white/[0.06] group hover:bg-neutral-950 transition-all cursor-pointer opacity-0 will-change-transform"
+            className="flex flex-col p-6 sm:p-8 bg-black border border-white/[0.06] group transition-colors duration-300 cursor-pointer opacity-0 will-change-transform"
           >
             {/* Icon — multi-color accent */}
             <div className={`w-10 h-10 mb-6 flex items-center justify-center border border-white/[0.08] ${card.iconColor} group-hover:border-white/20 transition-all`}>

@@ -7,58 +7,87 @@ import { magneticHover, snapReturn } from '../lib/eases';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const Hero: React.FC = () => {
+const Hero: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
   const sectionRef = useRef<HTMLElement>(null);
-  const nameRef = useRef<HTMLHeadingElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
-  const descRef = useRef<HTMLParagraphElement>(null);
+  const revealTextsRef = useRef<(HTMLSpanElement | null)[]>([]);
+  const subRevealRef = useRef<HTMLParagraphElement>(null);
   const metaRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const { contextSafe } = useGSAP(
     () => {
-      const tl = gsap.timeline({
-        defaults: { ease: 'power3.out', force3D: true },
+      // Always set initial state so it's hidden during loading
+      gsap.set(revealTextsRef.current.filter(Boolean), {
+        y: '110%',
+        skewY: 7,
+        opacity: 1,
       });
 
+      // If loading, stop here. dependencies will re-trigger this when isLoading becomes false.
+      if (isLoading) return;
+
+      const tl = gsap.timeline({
+        defaults: { force3D: true },
+      });
+
+      // 1. Label fade in
       tl.fromTo(
         labelRef.current,
         { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.5 }
-      )
-        .fromTo(
-          nameRef.current,
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          '-=0.2'
-        )
-        .fromTo(
-          descRef.current,
-          { opacity: 0, y: 25 },
-          { opacity: 1, y: 0, duration: 0.6 },
-          '-=0.35'
-        )
-        .fromTo(
-          metaRef.current,
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.5 },
-          '-=0.25'
-        )
-        .fromTo(
-          ctaRef.current?.children
-            ? Array.from(ctaRef.current.children)
-            : [],
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.1,
-          },
-          '-=0.2'
-        );
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }
+      );
 
+      // 2. Slit-reveal name animation — expo ease for premium feel
+      tl.to(
+        revealTextsRef.current.filter(Boolean),
+        {
+          y: 0,
+          skewY: 0,
+          duration: 1.8,
+          ease: 'expo.out',
+          stagger: {
+            amount: 0.3,
+            from: 'start',
+          },
+        },
+        '-=0.2'
+      );
+
+      // 3. Sub-reveal description
+      tl.fromTo(
+        subRevealRef.current,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 1.5, ease: 'expo.out' },
+        '-=1.2'
+      );
+
+      // 4. Meta tags
+      tl.fromTo(
+        metaRef.current,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+        '-=0.8'
+      );
+
+      // 5. CTA buttons stagger
+      tl.fromTo(
+        ctaRef.current?.children
+          ? Array.from(ctaRef.current.children)
+          : [],
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'power3.out',
+        },
+        '-=0.5'
+      );
+
+      // Parallax on scroll (only needed once, but safe to re-init or check)
       if (contentRef.current) {
         gsap.to(contentRef.current, {
           y: -80,
@@ -74,7 +103,7 @@ const Hero: React.FC = () => {
         });
       }
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [isLoading] }
   );
 
   const handleButtonHover = contextSafe(
@@ -111,19 +140,40 @@ const Hero: React.FC = () => {
           <div className="accent-line mt-3" />
         </div>
 
-        {/* Name */}
-        <h1
-          ref={nameRef}
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] mb-6 sm:mb-8 opacity-0"
-        >
-          Tharaneesh
-          <br />
-          <span className="text-neutral-600">J</span>
+        {/* Name — Slit Reveal */}
+        <h1 className="mb-6 sm:mb-8 uppercase font-black tracking-tighter leading-[0.95]">
+          {/* Line 1: "Tharaneesh" */}
+          <span
+            className="block overflow-hidden"
+            style={{ height: 'clamp(48px, 10vw, 110px)' }}
+          >
+            <span
+              ref={(el) => { revealTextsRef.current[0] = el; }}
+              className="block text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white will-change-transform"
+              style={{ opacity: 0 }}
+            >
+              Tharaneesh
+            </span>
+          </span>
+
+          {/* Line 2: "J" */}
+          <span
+            className="block overflow-hidden"
+            style={{ height: 'clamp(48px, 10vw, 110px)' }}
+          >
+            <span
+              ref={(el) => { revealTextsRef.current[1] = el; }}
+              className="block text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-neutral-600 will-change-transform"
+              style={{ opacity: 0 }}
+            >
+              J
+            </span>
+          </span>
         </h1>
 
-        {/* Description */}
+        {/* Description — sub reveal */}
         <p
-          ref={descRef}
+          ref={subRevealRef}
           className="max-w-xl text-base sm:text-lg text-neutral-500 leading-relaxed mb-6 sm:mb-8 opacity-0"
         >
           Creative and curious{' '}
@@ -145,7 +195,7 @@ const Hero: React.FC = () => {
           </span>
         </div>
 
-        {/* CTA — color accents allowed here */}
+        {/* CTA */}
         <div ref={ctaRef} className="flex flex-col sm:flex-row items-start gap-4">
           <button
             onMouseEnter={(e) => handleButtonHover(e, true)}
@@ -153,7 +203,7 @@ const Hero: React.FC = () => {
             onClick={scrollToContact}
             className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-black text-sm font-semibold flex items-center justify-center gap-3 border border-white hover:bg-neutral-200 transition-colors opacity-0 will-change-transform w-full sm:w-auto"
           >
-            <span>Hire Me</span>
+            <span>Contact</span>
             <ArrowRight size={16} />
           </button>
 

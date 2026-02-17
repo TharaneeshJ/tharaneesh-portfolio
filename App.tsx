@@ -18,7 +18,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const App: React.FC = () => {
   const appRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
-  const panelContainerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleLoadingComplete = useCallback(() => {
@@ -44,65 +43,6 @@ const App: React.FC = () => {
           },
         }
       );
-
-      // ─── Stacking Panels (pin + content scroll + fade-out) ───
-      if (!panelContainerRef.current) return;
-
-      const panels = gsap.utils.toArray<HTMLElement>(
-        panelContainerRef.current.querySelectorAll('.panel')
-      );
-
-      if (panels.length === 0) return;
-
-      const vh = window.innerHeight;
-
-      panels.forEach((panel, i) => {
-        panel.style.zIndex = String(i + 1);
-
-        const panelHeight = panel.scrollHeight;
-        const overflow = Math.max(0, panelHeight - vh);
-        const fadeDistance = vh * 0.3; // fade only uses 30% of viewport scroll
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: panel,
-            start: 'top top',
-            end: () => {
-              const h = panel.scrollHeight;
-              const extra = Math.max(0, h - vh);
-              return `+=${extra + vh}`;
-            },
-            pin: true,
-            pinSpacing: true,
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        // Phase 1: scroll through overflowing content
-        if (overflow > 0) {
-          tl.to(panel, {
-            y: -overflow,
-            ease: 'none',
-            force3D: true,
-            duration: overflow, // proportional to content length
-          });
-        }
-
-        if (i < panels.length - 1) {
-          // Phase 2: hold visible (the section stays fully visible while scrolling)
-          tl.to({}, { duration: vh - fadeDistance });
-
-          // Phase 3: quick fade at the very end
-          tl.to(panel, {
-            opacity: 0,
-            scale: 0.98,
-            ease: 'power1.in',
-            force3D: true,
-            duration: fadeDistance,
-          });
-        }
-      });
     },
     { scope: appRef, dependencies: [isLoading] }
   );
@@ -115,48 +55,38 @@ const App: React.FC = () => {
         <div ref={appRef} className="relative min-h-screen bg-black">
           <MouseEffect />
 
-          {/* Scroll Progress Bar — white line */}
+          {/* Scroll Progress Bar */}
           <div
             ref={progressBarRef}
             className="fixed top-0 left-0 right-0 h-px bg-white origin-left z-[60]"
             style={{ transform: 'scaleX(0)' }}
           />
 
-          <Header />
+          <Header isLoading={isLoading} />
 
-          <main ref={panelContainerRef} className="relative">
-            <section className="panel min-h-screen flex items-center justify-center bg-black relative">
-              <Hero />
+          <main className="relative z-[1]">
+            <section className="min-h-screen flex items-center justify-center bg-black relative">
+              <Hero isLoading={isLoading} />
             </section>
 
-            <section className="panel min-h-screen flex items-center bg-black py-16 sm:py-24 relative">
-              <div className="w-full relative z-10" id="skills">
-                <Skills />
-              </div>
+            <section className="bg-black py-16 sm:py-24 relative" id="skills">
+              <Skills />
             </section>
 
-            <section className="panel min-h-screen flex items-center bg-black py-16 sm:py-24 relative">
-              <div className="w-full relative z-10" id="experience">
-                <ExperienceTimeline />
-              </div>
+            <section className="bg-black py-16 sm:py-24 relative" id="experience">
+              <ExperienceTimeline />
             </section>
 
-            <section className="panel min-h-screen flex items-center bg-black py-16 sm:py-24 relative">
-              <div className="w-full relative z-10" id="projects">
-                <Projects />
-              </div>
+            <section className="bg-black py-16 sm:py-24 relative" id="projects">
+              <Projects />
             </section>
 
-            <section className="panel min-h-screen flex items-center bg-black py-16 sm:py-24 relative">
-              <div className="w-full relative z-10" id="education">
-                <Education />
-              </div>
+            <section className="bg-black py-16 sm:py-24 relative" id="education">
+              <Education />
             </section>
 
-            <section className="panel min-h-screen flex items-center bg-black py-16 sm:py-24 text-white relative">
-              <div className="w-full relative z-10" id="contact">
-                <Contact />
-              </div>
+            <section className="bg-black py-16 sm:py-24 text-white relative" id="contact">
+              <Contact />
             </section>
           </main>
 

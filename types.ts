@@ -7,6 +7,10 @@ export interface Project {
   tags: string[];
   category?: string;
   icon?: React.ReactNode;
+  domain?: string;
+  tools?: string;
+  solves?: string;
+  works?: string;
 }
 
 export interface Experience {

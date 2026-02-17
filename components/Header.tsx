@@ -6,7 +6,7 @@ import { magneticHover, snapReturn } from '../lib/eases';
 
 gsap.registerPlugin(useGSAP);
 
-const Header: React.FC = () => {
+const Header: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const headerRef = useRef<HTMLElement>(null);
@@ -19,6 +19,12 @@ const Header: React.FC = () => {
 
   const { contextSafe } = useGSAP(
     () => {
+      // Set initial state
+      gsap.set(logoRef.current, { opacity: 0, x: -20 });
+      gsap.set(navItemsRef.current.filter(Boolean), { opacity: 0, y: -10 });
+
+      if (isLoading) return;
+
       const tl = gsap.timeline({
         defaults: { ease: 'power3.out', force3D: true },
       });
@@ -40,7 +46,7 @@ const Header: React.FC = () => {
         '-=0.3'
       );
     },
-    { scope: headerRef }
+    { scope: headerRef, dependencies: [isLoading] }
   );
 
   useEffect(() => {

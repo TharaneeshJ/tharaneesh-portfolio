@@ -36,12 +36,12 @@ const techItems = [
 
 const HorizontalScroll: React.FC = () => {
     const sectionRef = useRef<HTMLDivElement>(null);
-    const trackRef = useRef<HTMLDivElement>(null);
     const headingRef = useRef<HTMLDivElement>(null);
+    const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
 
     useGSAP(
         () => {
-            if (!trackRef.current || !sectionRef.current) return;
+            if (!sectionRef.current) return;
 
             gsap.fromTo(
                 headingRef.current,
@@ -59,70 +59,61 @@ const HorizontalScroll: React.FC = () => {
                 }
             );
 
-            const totalWidth = trackRef.current.scrollWidth;
-            const viewportWidth = window.innerWidth;
-            const scrollDistance = totalWidth - viewportWidth;
-
-            gsap.to(trackRef.current, {
-                x: -scrollDistance,
-                ease: 'none',
-                force3D: true,
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    pin: true,
-                    scrub: 1,
-                    start: 'top top',
-                    end: () => `+=${scrollDistance}`,
-                    invalidateOnRefresh: true,
-                },
-            });
+            gsap.fromTo(
+                itemsRef.current.filter(Boolean),
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    stagger: 0.06,
+                    ease: 'power3.out',
+                    force3D: true,
+                    scrollTrigger: {
+                        trigger: sectionRef.current,
+                        start: 'top 75%',
+                        toggleActions: 'play none none none',
+                    },
+                }
+            );
         },
         { scope: sectionRef }
     );
 
     return (
-        <div ref={sectionRef} className="relative bg-black">
-            <div className="pt-16 sm:pt-24 pb-6 sm:pb-8 px-4 sm:px-6">
-                <div ref={headingRef} className="mb-8 sm:mb-12 opacity-0">
-                    <span className="label">Ecosystem</span>
-                    <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4 text-white tracking-tight">
-                        Technologies & Interests
-                    </h2>
-                    <div className="accent-line" />
-                </div>
+        <div ref={sectionRef} className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div ref={headingRef} className="mb-10 sm:mb-16 opacity-0">
+                <span className="label">Ecosystem</span>
+                <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4 text-white tracking-tight">
+                    Technologies & Interests
+                </h2>
+                <div className="accent-line" />
             </div>
 
-            <div
-                ref={trackRef}
-                className="flex items-stretch gap-px px-4 sm:px-6 pb-16 sm:pb-24 will-change-transform"
-                style={{ width: 'max-content' }}
-            >
-                {[...techItems, ...techItems].map((item, idx) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-px bg-white/[0.06]">
+                {techItems.map((item, idx) => (
                     <div
-                        key={`${item.label}-${idx}`}
-                        className="h-scroll-item flex-shrink-0 w-[200px] sm:w-[260px] md:w-[300px] p-6 sm:p-8 bg-black border border-white/[0.06] hover:border-white/[0.15] hover:bg-neutral-950 transition-all duration-300 group cursor-default"
+                        key={item.label}
+                        ref={(el) => {
+                            itemsRef.current[idx] = el;
+                        }}
+                        className="p-6 sm:p-8 bg-black border border-white/[0.06] hover:border-white/[0.15] hover:bg-neutral-950 transition-all duration-300 group cursor-default opacity-0"
                     >
-                        {/* Icon — multi-color accent */}
-                        <div className={`w-10 h-10 mb-6 flex items-center justify-center border border-white/[0.08] ${item.color} group-hover:border-white/20 transition-colors`}>
+                        {/* Icon */}
+                        <div
+                            className={`w-10 h-10 mb-5 flex items-center justify-center border border-white/[0.08] ${item.color} group-hover:border-white/20 transition-colors`}
+                        >
                             {item.icon}
                         </div>
-                        <h3 className="text-base font-bold mb-2 text-neutral-300 group-hover:text-white transition-colors">
+                        <h3 className="text-sm font-bold mb-2 text-neutral-300 group-hover:text-white transition-colors">
                             {item.label}
                         </h3>
-                        <div className="h-px w-full bg-white/[0.06] mb-3" />
-                        <p className="text-xs text-neutral-700 leading-relaxed">
+                        <div className="h-px w-full bg-white/[0.06] mb-2" />
+                        <p className="text-[11px] text-neutral-700 leading-relaxed">
                             Part of the toolkit I leverage for building impactful solutions.
                         </p>
                     </div>
                 ))}
-            </div>
-
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3">
-                <div className="h-px w-12 bg-neutral-800" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-700">
-                    Scroll to explore
-                </span>
-                <div className="h-px w-12 bg-neutral-800" />
             </div>
         </div>
     );
