@@ -12,6 +12,7 @@ export interface Project {
   solves?: string;
   works?: string;
   github?: string;
+  context?: string;
 }
 
 export interface Experience {

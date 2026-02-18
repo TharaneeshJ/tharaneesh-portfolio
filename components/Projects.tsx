@@ -37,6 +37,7 @@ const projectData: Project[] = [
       'Addresses the critical need for automated weapon detection in public spaces. Eliminates human error by providing real-time AI-powered surveillance that instantly identifies firearms and knives in live camera feeds.',
     works:
       'Uses YOLOv8 deep learning model trained on weapon datasets. Processes live video streams frame-by-frame, running inference to detect and classify weapons with bounding boxes. Triggers automated SMS/email alerts when threats are identified.',
+    context: 'Mini Project - I',
   },
   {
     title: "Smart Women's Safety Device",
@@ -51,6 +52,7 @@ const projectData: Project[] = [
       'Provides a discreet, wearable safety solution for women. One-button press sends emergency alerts with precise GPS location to pre-configured contacts, enabling rapid response in dangerous situations.',
     works:
       'ESP32 microcontroller interfaces with GPS for live location, GSM for SMS alerts, and LoRa for long-range mesh communication. A single panic button trigger activates all modules simultaneously, sending coordinates and distress signals.',
+    context: 'CMR Hackfest 3.0',
   },
 
   {
@@ -66,13 +68,14 @@ const projectData: Project[] = [
       'Bridges the healthcare gap for elderly users who struggle with hospital visits. Provides daily nutrition guidance and enables seamless online doctor consultations from the comfort of home.',
     works:
       'Supabase handles authentication and real-time database. n8n automates appointment scheduling workflows, sends reminders, and manages consultation sessions. TypeScript ensures type-safe frontend interactions.',
+    context: 'Mini Project - II',
   },
   {
     title: 'Restaurant QR Ordering SaaS Product',
     description:
       'Building a service product that enables customers to choose menu items and place orders directly from their table. Inspired by digital ordering systems from KFC and Burger King.',
     tags: ['TypeScript', 'Excel'],
-    category: 'SaaS',
+    category: 'Food Tech',
     icon: <UtensilsCrossed size={16} />,
     domain: 'SaaS Product',
     tools: 'TypeScript · Excel',
@@ -308,6 +311,14 @@ const Projects: React.FC = () => {
                     <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-neutral-600 group-hover:text-neutral-500 transition-colors">
                       {project.category}
                     </span>
+                    {project.context && (
+                      <>
+                        <span className="w-1 h-1 rounded-full bg-neutral-700" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white/60">
+                          {project.context}
+                        </span>
+                      </>
+                    )}
                   </div>
 
                   {/* Title */}
