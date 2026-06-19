@@ -47,42 +47,7 @@ const App: React.FC = () => {
     { scope: appRef, dependencies: [isLoading] }
   );
 
-  const mainRef = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      let lastScrollY = window.scrollY;
-      let targetBlur = 0;
-      let currentBlur = 0;
-
-      const updateBlur = () => {
-        const currentScrollY = window.scrollY;
-        const diff = Math.abs(currentScrollY - lastScrollY);
-
-        // Target is the raw velocity
-        targetBlur = Math.min(diff * 0.2, 12);
-
-        // Lerp towards target for smoothness
-        currentBlur += (targetBlur - currentBlur) * 0.1;
-
-        if (mainRef.current) {
-          gsap.set(mainRef.current, {
-            filter: `blur(${currentBlur}px)`,
-          });
-        }
-
-        lastScrollY = currentScrollY;
-      };
-
-      // Add to GSAP ticker for 60fps updates
-      gsap.ticker.add(updateBlur);
-
-      return () => {
-        gsap.ticker.remove(updateBlur);
-      };
-    },
-    { scope: appRef }
-  );
 
   return (
     <>
@@ -99,7 +64,7 @@ const App: React.FC = () => {
 
           <Header isLoading={isLoading} />
 
-          <main ref={mainRef} className="relative z-[1] will-change-[filter]">
+          <main className="relative z-[1]">
             <section className="min-h-screen flex items-center justify-center bg-black relative">
               <Hero isLoading={isLoading} />
             </section>
