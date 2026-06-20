@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { Mail, Github, Linkedin, Phone, ArrowUpRight } from 'lucide-react';
+import { Mail, Github, Linkedin, MessageCircle, ArrowUpRight } from 'lucide-react';
 import { magneticHover, snapReturn } from '../lib/eases';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -21,8 +21,8 @@ const Contact: React.FC = () => {
   const handleGithubClick = () => {
     window.open('https://github.com/TharaneeshJ', '_blank');
   };
-  const handlePhoneClick = () => {
-    window.location.href = 'tel:+917395936932';
+  const handleWhatsAppClick = () => {
+    window.open('https://wa.me/917395936932', '_blank');
   };
 
   const { contextSafe } = useGSAP(
@@ -75,7 +75,7 @@ const Contact: React.FC = () => {
     {
       label: 'Email',
       value: 'tharaneeshj@gmail.com',
-      action: 'Send Message',
+      action: 'Send Mail',
       onClick: handleEmailClick,
       icon: <Mail size={20} />,
       iconColor: 'text-rose-400',
@@ -97,11 +97,11 @@ const Contact: React.FC = () => {
       iconColor: 'text-white',
     },
     {
-      label: 'Phone',
+      label: 'WhatsApp',
       value: '+91 73959 36932',
-      action: 'Call Now',
-      onClick: handlePhoneClick,
-      icon: <Phone size={20} />,
+      action: 'Message Me',
+      onClick: handleWhatsAppClick,
+      icon: <MessageCircle size={20} />,
       iconColor: 'text-emerald-400',
     },
   ];
