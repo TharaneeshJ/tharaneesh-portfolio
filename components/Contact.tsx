@@ -75,7 +75,7 @@ const Contact: React.FC = () => {
     {
       label: 'Email',
       value: 'tharaneeshj@gmail.com',
-      action: 'Send Mail',
+      action: 'Contact',
       onClick: handleEmailClick,
       icon: <Mail size={20} />,
       iconColor: 'text-rose-400',
