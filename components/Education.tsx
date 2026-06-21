@@ -12,7 +12,7 @@ const educationData: EduType[] = [
   {
     degree: 'B.Tech — Artificial Intelligence & Data Science',
     institution: 'Kongunadu College of Engineering and Technology, Trichy',
-    period: '3rd Year',
+    period: 'Final Year',
     grade: 'CGPA: 7.3',
   },
   {
