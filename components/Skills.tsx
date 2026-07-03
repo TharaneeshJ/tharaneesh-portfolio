@@ -2,33 +2,44 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { Code2, Wrench, Users, Languages } from 'lucide-react';
+import { Code2, Wrench, Users, Languages, BookOpen } from 'lucide-react';
 import { SkillCategory } from '../types';
 import { magneticHover, snapReturn } from '../lib/eases';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 /* Multi-color only on icons */
-const iconColors = ['text-emerald-400', 'text-amber-400', 'text-violet-400', 'text-rose-400'];
+const iconColors = [
+  'text-emerald-400',
+  'text-cyan-400',
+  'text-amber-400',
+  'text-violet-400',
+  'text-rose-400',
+];
 
 const skillCategories: (SkillCategory & { icon: React.ReactNode })[] = [
   {
     title: 'Technical Skills',
     icon: <Code2 size={20} />,
-    skills: ['Java', 'Python'],
+    skills: ['Java', 'MongoDB'],
   },
   {
-    title: 'Tools',
+    title: 'Core Concepts',
+    icon: <BookOpen size={20} />,
+    skills: ['Data Structures & Algorithms (DSA)', 'Object-Oriented Programming (OOPs)'],
+  },
+  {
+    title: 'Tools & Platforms',
     icon: <Wrench size={20} />,
-    skills: ['Canva', 'MS Excel', 'Power BI', 'Tableau'],
+    skills: ['Git/GitHub', 'Supabase', 'n8n', 'Excel', 'Canva'],
   },
   {
-    title: 'Soft Skills',
+    title: 'Professional Skills',
     icon: <Users size={20} />,
-    skills: ['Creativity', 'Problem Solving', 'Adaptability', 'Time Management', 'Teamwork'],
+    skills: ['Problem Solving', 'Analytical Thinking', 'Adaptability', 'Self-Learning', 'Teamwork & Management'],
   },
   {
-    title: 'Languages',
+    title: 'Languages Spoken',
     icon: <Languages size={20} />,
     skills: ['English', 'Tamil'],
   },
@@ -94,7 +105,7 @@ const Skills: React.FC = () => {
         <div className="accent-line" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
         {skillCategories.map((cat, idx) => (
           <div
             key={cat.title}
