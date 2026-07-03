@@ -22,6 +22,10 @@ const App: React.FC = () => {
 
   const handleLoadingComplete = useCallback(() => {
     setIsLoading(false);
+    // Refresh ScrollTrigger after loader is unmounted and layout has settled
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
   }, []);
 
   useGSAP(

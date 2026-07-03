@@ -138,12 +138,9 @@ const Contact: React.FC = () => {
               {card.icon}
             </div>
 
-            <p className="text-[10px] text-neutral-700 uppercase font-bold tracking-[0.15em] mb-1">
+            <p className="text-[10px] text-neutral-700 uppercase font-bold tracking-[0.15em] mb-6">
               {card.label}
             </p>
-            <span className="text-sm text-neutral-400 group-hover:text-white transition-colors break-all mb-6 font-mono">
-              {card.value}
-            </span>
 
             <div className="mt-auto flex items-center gap-2 text-xs font-semibold text-neutral-700 group-hover:text-white transition-colors">
               <span>{card.action}</span>

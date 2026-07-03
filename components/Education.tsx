@@ -26,7 +26,6 @@ const educationData: EduType[] = [
 const Education: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const { contextSafe } = useGSAP(
     () => {
@@ -45,9 +44,8 @@ const Education: React.FC = () => {
         { opacity: 1, y: 0, duration: 0.6 }
       );
 
-      const cards = cardsRef.current.filter(Boolean);
       tl.fromTo(
-        cards,
+        '.education-card',
         { opacity: 0, y: 30 },
         {
           opacity: 1,
@@ -63,7 +61,7 @@ const Education: React.FC = () => {
   );
 
   const handleCardHover = contextSafe(
-    (el: HTMLDivElement | null, enter: boolean) => {
+    (el: HTMLElement | null, enter: boolean) => {
       if (!el) return;
       gsap.to(el, {
         y: enter ? -6 : 0,
@@ -88,15 +86,12 @@ const Education: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-        {educationData.map((edu, idx) => (
+        {educationData.map((edu) => (
           <div
             key={edu.degree}
-            ref={(el) => {
-              cardsRef.current[idx] = el;
-            }}
-            onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
-            onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
-            className="p-6 sm:p-8 md:p-10 bg-black border border-white/[0.06] transition-colors duration-300 cursor-default group will-change-transform opacity-0"
+            onMouseEnter={(e) => handleCardHover(e.currentTarget, true)}
+            onMouseLeave={(e) => handleCardHover(e.currentTarget, false)}
+            className="education-card p-6 sm:p-8 md:p-10 bg-black border border-white/[0.06] transition-colors duration-300 cursor-default group will-change-transform opacity-0"
           >
             <div className="flex items-start justify-between mb-6">
               {/* Icon — small color accent */}

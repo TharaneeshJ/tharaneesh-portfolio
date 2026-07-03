@@ -99,7 +99,6 @@ const iconColors = [
 const Projects: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const modalRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -129,7 +128,7 @@ const Projects: React.FC = () => {
       );
 
       gsap.fromTo(
-        cardsRef.current.filter(Boolean),
+        '.project-card',
         { opacity: 0, y: 40 },
         {
           opacity: 1,
@@ -261,7 +260,7 @@ const Projects: React.FC = () => {
   );
 
   const handleCardHover = contextSafe(
-    (el: HTMLDivElement | null, enter: boolean) => {
+    (el: HTMLElement | null, enter: boolean) => {
       if (!el) return;
       gsap.to(el, {
         y: enter ? -6 : 0,
@@ -292,13 +291,10 @@ const Projects: React.FC = () => {
             return (
               <div
                 key={project.title}
-                ref={(el) => {
-                  cardsRef.current[idx] = el;
-                }}
                 onClick={() => openProject(project, iconColor)}
-                onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
-                onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
-                className="p-6 sm:p-8 bg-black border border-white/[0.06] transition-colors duration-300 group cursor-pointer relative opacity-0"
+                onMouseEnter={(e) => handleCardHover(e.currentTarget, true)}
+                onMouseLeave={(e) => handleCardHover(e.currentTarget, false)}
+                className="project-card p-6 sm:p-8 bg-black border border-white/[0.06] transition-colors duration-300 group cursor-pointer relative opacity-0"
               >
                 <div className="flex flex-col h-full">
                   {/* Icon */}

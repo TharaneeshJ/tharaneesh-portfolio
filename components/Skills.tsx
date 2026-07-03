@@ -48,7 +48,6 @@ const skillCategories: (SkillCategory & { icon: React.ReactNode })[] = [
 const Skills: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const { contextSafe } = useGSAP(
     () => {
@@ -66,7 +65,7 @@ const Skills: React.FC = () => {
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.6 }
       ).fromTo(
-        cardsRef.current.filter(Boolean),
+        '.skill-card',
         { opacity: 0, y: 30 },
         {
           opacity: 1,
@@ -81,7 +80,7 @@ const Skills: React.FC = () => {
   );
 
   const handleCardHover = contextSafe(
-    (el: HTMLDivElement | null, enter: boolean) => {
+    (el: HTMLElement | null, enter: boolean) => {
       if (!el) return;
       gsap.to(el, {
         y: enter ? -6 : 0,
@@ -105,36 +104,45 @@ const Skills: React.FC = () => {
         <div className="accent-line" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
-        {skillCategories.map((cat, idx) => (
-          <div
-            key={cat.title}
-            ref={(el) => {
-              cardsRef.current[idx] = el;
-            }}
-            onMouseEnter={() => handleCardHover(cardsRef.current[idx], true)}
-            onMouseLeave={() => handleCardHover(cardsRef.current[idx], false)}
-            className="p-6 sm:p-8 bg-black border border-white/[0.06] transition-colors duration-300 group cursor-default opacity-0"
-          >
-            {/* Icon — multi-color accent */}
-            <div className={`mb-6 w-10 h-10 flex items-center justify-center border border-white/[0.08] ${iconColors[idx]} group-hover:border-white/20 transition-all duration-300`}>
-              {cat.icon}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-4 sm:gap-6">
+        {skillCategories.map((cat, idx) => {
+          // Responsive col-span classes for a clean 3-2 alignment on desktop
+          const colSpans = [
+            'sm:col-span-1 md:col-span-2', // Card 1 (Row 1)
+            'sm:col-span-1 md:col-span-2', // Card 2 (Row 1)
+            'sm:col-span-1 md:col-span-2', // Card 3 (Row 1)
+            'sm:col-span-1 md:col-span-3', // Card 4 (Row 2)
+            'sm:col-span-2 md:col-span-3', // Card 5 (Row 2)
+          ];
+          const colSpanClass = colSpans[idx] || 'sm:col-span-1 md:col-span-2';
+
+          return (
+            <div
+              key={cat.title}
+              onMouseEnter={(e) => handleCardHover(e.currentTarget, true)}
+              onMouseLeave={(e) => handleCardHover(e.currentTarget, false)}
+              className={`skill-card p-6 sm:p-8 bg-black border border-white/[0.06] transition-colors duration-300 group cursor-default opacity-0 ${colSpanClass}`}
+            >
+              {/* Icon — multi-color accent */}
+              <div className={`mb-6 w-10 h-10 flex items-center justify-center border border-white/[0.08] ${iconColors[idx]} group-hover:border-white/20 transition-all duration-300`}>
+                {cat.icon}
+              </div>
+              <h3 className="text-sm font-semibold mb-4 text-neutral-300 uppercase tracking-wider group-hover:text-white transition-colors">
+                {cat.title}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {cat.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1.5 bg-neutral-950 text-[11px] font-medium text-neutral-600 border border-white/[0.04] group-hover:text-neutral-400 group-hover:border-white/[0.08] transition-colors"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
-            <h3 className="text-sm font-semibold mb-4 text-neutral-300 uppercase tracking-wider group-hover:text-white transition-colors">
-              {cat.title}
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {cat.skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="px-3 py-1.5 bg-neutral-950 text-[11px] font-medium text-neutral-600 border border-white/[0.04] group-hover:text-neutral-400 group-hover:border-white/[0.08] transition-colors"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
