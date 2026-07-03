@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { ArrowRight, Download } from 'lucide-react';
 import { magneticHover, snapReturn } from '../lib/eases';
 
+
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Hero: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
@@ -218,7 +219,6 @@ const Hero: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
               </a>
             </div>
           </div>
-
           {/* Right Column: Profile Image */}
           <div className="flex-1 order-1 md:order-2 flex justify-center md:justify-end">
             <div
